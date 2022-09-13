@@ -30,6 +30,9 @@ refs.gallery.innerHTML = galleryItemMarkup;
 refs.gallery.addEventListener("click", onOpenModal);
 
 function onOpenModal(event) {
+  if (event.target.nodeName !== "IMG") {
+    return;
+  }
   event.preventDefault();
 
   window.addEventListener("keydown", (event) => {
