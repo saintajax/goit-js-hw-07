@@ -33,17 +33,22 @@ function onOpenModal(event) {
   if (event.target.nodeName !== "IMG") {
     return;
   }
+
   event.preventDefault();
-
-  window.addEventListener("keydown", (event) => {
-    if (event.code === "Escape") {
-      instance.close();
-    }
-  });
-
+  window.addEventListener("keydown", escPress);
   const instance = basicLightbox.create(`
       <img src="${event.target.dataset.source}" width="800" height="600">
   `);
 
   instance.show();
+
+  function escPress(event) {
+    console.log(event.code);
+    if (event.code === "Escape") {
+      instance.close(window.removeEventListener("keydown", escPress));
+    }
+    if (!basicLightbox.visible()) {
+      window.removeEventListener("keydown", escPress);
+    }
+  }
 }
