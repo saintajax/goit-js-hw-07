@@ -35,20 +35,26 @@ function onOpenModal(event) {
   }
 
   event.preventDefault();
-  window.addEventListener("keydown", escPress);
-  const instance = basicLightbox.create(`
+  const instance = basicLightbox.create(
+    `
       <img src="${event.target.dataset.source}" width="800" height="600">
-  `);
+  `,
+    {
+      onShow: (instance) => {
+        window.addEventListener("keydown", escPress);
+      },
+      onClose: (instance) => {
+        window.removeEventListener("keydown", escPress);
+      },
+    }
+  );
 
   instance.show();
 
   function escPress(event) {
     console.log(event.code);
     if (event.code === "Escape") {
-      instance.close(window.removeEventListener("keydown", escPress));
-    }
-    if (!basicLightbox.visible()) {
-      window.removeEventListener("keydown", escPress);
+      instance.close();
     }
   }
 }
